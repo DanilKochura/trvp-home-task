@@ -1,0 +1,615 @@
+:root {
+  --base-font-family: 'Fira Sans', sans-serif, Helvetica;
+
+  --blue-10-color: #93C4F5;
+  --blue-30-color: #7CBAF9;
+  --blue-50-color: #0e5eff;
+  --blue-70-color: #020275;
+  --blue-90-color: #01203F;
+
+  --seawave-30-color: #7FACAC;
+  --seawave-90-color: #053A47;
+
+  --white-color: white;
+
+  --dark-grey-color: #3D3D3F;
+
+  --black-color: black;
+
+  --main-bg-start-color: var(--blue-30-color);
+  --main-bg-end-color: var(--seawave-30-color);
+  --main-header-text-color: var(--blue-70-color);
+  --shadow-color: #00000029;
+  --tasklist-bg-color: #cbdff4bf;
+  --tasklist-last-bg-color: #cbdff473;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  font-family: var(--base-font-family);
+}
+
+ul {
+  list-style: none;
+}
+
+body {
+  padding: 0;
+  min-height: 100vh;
+  background: white;
+}
+
+body.dark-theme {
+  --main-bg-start-color: var(--blue-90-color);
+  --main-bg-end-color: var(--seawave-90-color);
+  --main-header-text-color: var(--blue-10-color);
+}
+
+#app-header {
+  width: 100%;
+  padding: 2vh 4vh;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2px solid var(--blue-70-color);
+}
+
+.app-header__app-name {
+  font-size: clamp(1rem, 2.7vw, 3.2rem);
+  color: var(--main-header-text-color);
+}
+
+.app-header__user-and-controls {
+  display: flex;
+  align-items: center;
+  gap: 4vw;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 2vw;
+}
+
+.user-info__avatar {
+  width: clamp(2rem, 6vw, 5rem);
+  height: clamp(2rem, 6vw, 5rem);
+  border-radius: 50%;
+  border: 2px solid var(--white-color);
+  background: url('/images/keanu.jpg') center / cover;
+}
+
+.user-info__username {
+  font-size: clamp(1rem, 2.7vw, 3.2rem);
+  color: var(--main-header-text-color);
+}
+
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  width: 6vh;
+  height: 3vh;
+}
+
+.toggle-switch__checkbox {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-switch__slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  border-radius: 1.5vh;
+  background-color: var(--blue-30-color);
+  border: 1px solid var(--white-color);
+  transition: .4s;
+}
+
+.toggle-switch__slider::before {
+  width: calc(3vh - 6px);
+  height: calc(3vh - 6px);
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  border-radius: 50%;
+  background-color: var(--white-color);
+  transition: .4s;
+}
+
+.toggle-switch__checkbox:checked + .toggle-switch__slider {
+  background-color: var(--blue-70-color);
+}
+
+.toggle-switch__checkbox:checked + .toggle-switch__slider::before {
+  transform: translateX(3vh);
+}
+
+#app-main {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 3vh;
+  padding: 3vh 4vh 0 4vh;
+}
+
+.tasklists-list {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: start;
+  row-gap: 3vh;
+  column-gap: calc(8% / 3);
+}
+
+.tasklists-list__item {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 1vw;
+  padding: 1vw 1.2vw;
+  box-shadow: 2px 2px 4px var(--shadow-color);
+  /* background-color: var(--tasklist-bg-color); */
+  border: 2px solid var(--tasklist-bg-color);
+  border-left: 12px solid var(--main-header-text-color);
+}
+
+.tasklist.tasklist_droppable {
+  border: 2px dashed var(--blue-50-color);
+}
+
+.tasklist__name {
+  font-size: clamp(0.75rem, 2vw, 2rem);
+  font-weight: 600;
+  margin-bottom: 1vw;
+  color: var(--blue-70-color);
+}
+
+.tasklist__add-task-btn {
+  border: none;
+  background: none;
+  font-size: clamp(0.7rem, 1.5vw, 1.5rem);
+  color: var(--dark-grey-color);
+}
+
+.tasklist__add-task-btn:hover {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.task {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1vw;
+  gap: 1vw;
+  margin-bottom: 1vw;
+  border-radius: 0.75vw;
+  box-shadow: 2px 2px 4px var(--shadow-color);
+  background-color: var(--blue-10-color);
+  border: 2px solid var(--blue-10-color);
+  transition: background-color 0.5s ease, border-color 0.5s ease;
+  cursor: move;
+}
+
+.task:hover {
+  background-color: var(--blue-30-color);
+  border-color: var(--blue-70-color);
+}
+
+.task__text {
+  overflow-wrap: anywhere;
+  font-size: clamp(0.7rem, 1.1vw, 1.1rem);
+}
+
+.task__controls-row {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: calc(2vw / 3);
+}
+
+/* .task__controls-row:first-child {
+  margin-bottom: calc(2vw / 3);
+} */
+
+.task__contol-btn {
+  width: 2vw;
+  height: 2vw;
+  opacity: 0.6;
+  border: none;
+}
+
+.task__contol-btn:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.left-arrow-icon {
+  background: url(/images/left-arrow.svg) center / cover;
+}
+
+.right-arrow-icon {
+  background: url(/images/right-arrow.svg) center / cover;
+}
+
+.edit-icon {
+  background: url(/images/edit.svg) center / cover;
+}
+
+.delete-icon {
+  background: url(/images/delete-button.svg) center / cover;
+}
+
+.tasklist:first-child .left-arrow-icon {
+  display: none;
+}
+
+.tasklist:nth-last-child(2) .right-arrow-icon {
+  display: none;
+}
+
+.tasklist-adder {
+  background-color: var(--tasklist-last-bg-color);
+  border-color: var(--tasklist-last-bg-color);
+  transition: background-color 1s ease;
+}
+
+.tasklist-adder:hover {
+  background-color: var(--tasklist-bg-color);
+  border-color: var(--tasklist-bg-color);
+}
+
+.tasklist-adder__btn {
+  border: none;
+  background: none;
+  font-weight: 400;
+  font-size: clamp(0.75rem, 2vw, 2rem);
+  color: var(--blue-70-color);
+}
+
+.tasklist-adder__btn:hover {
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.tasklist-adder__input {
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 0.6vw;
+  border-radius: 0.7vw;
+  box-shadow: 0 0 4px var(--shadow-color);
+  font-size: clamp(0.7rem, 1.5vw, 1.5rem);
+  color: var(--black-color);
+  opacity: 0.7;
+}
+
+
+.flight_adder_form
+{
+  display: none;
+}
+
+
+.tasklist-adder__input:hover,
+.tasklist-adder__input:focus {
+  opacity: 1;
+}
+
+.task.task_selected {
+  opacity: 0.6;
+}
+
+.app-header__app-name {
+  font-size: clamp(1rem, 2.7vw, 3.2rem);
+  color: var(--main-header-text-color);
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 6vw;
+}
+
+.user-info__username {
+  font-size: clamp(1rem, 2.7vw, 3.2rem);
+  color: var(--purple-30-color);
+}
+
+.user-info__avatar {
+  width: clamp(2rem, 6vw, 5rem);
+  height: clamp(2rem, 6vw, 5rem);
+  border-radius: 50%;
+  border: 2px solid var(--purple-30-color);
+  background: url(/images/avatar.jpg) center / cover;
+}
+
+
+.line {
+  padding: 0;
+  border-bottom: 4px solid var(--purple-30-color);
+}
+
+#app-main {
+  width: 100%;
+  box-sizing: border-box;
+  padding-top: 3vh;
+  margin-bottom: 3vh;
+}
+
+.list-flights {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+  align-items: start;
+  row-gap: 3vh;
+  column-gap: calc(8% / 3);
+}
+
+.flight-info{
+  background: rgb(92, 176, 237);
+  box-sizing: border-box;
+  width: 100%;
+  height: 9vw;
+  border-radius: 0.7vw;
+}
+
+.flight-info__wrapper{
+  display: flex;
+  width: 100%;
+  align-items: start;
+  flex-direction: row;
+  box-sizing: border-box;
+  padding:  1vw;
+}
+
+.flight-info__ticket{
+  display: flex;
+  align-items:center;
+  width: 100%;
+  row-gap: 3vh;
+  column-gap: calc(8% / 3);
+}
+
+
+.flight-info__ticket{
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  row-gap: 3vh;
+}
+
+.red-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.del-icon {
+  width: 100%;
+  height: 100%;
+}
+
+.flight-adder__btn {
+  box-sizing: border-box;
+  border: none;
+  background: none;
+  font-weight: 400;
+  font-size: clamp(0.75rem, 2vw, 2rem);
+  color: var(--blue-70-color);
+}
+
+.info-adder {
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  width: 20vw;
+  padding: 0.6vw;
+  border-radius: 0.7vw;
+  font-size: clamp(0.7rem, 1.5vw, 1.5rem);
+  background: blue;
+
+}
+
+.flight-adder {
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  width: 20vw;
+  padding: 0.6vw;
+  border-radius: 0.7vw;
+  font-size: clamp(0.7rem, 1.5vw, 1.5rem);
+  background: rgb(96, 195, 253);
+}
+
+.bookinglist__item{
+  display: flex;
+  flex-direction: row;
+  gap: 2vw;
+}
+
+.book {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  width: 10vw;
+  height: 12vh;
+  padding: 0.8vw;
+  border-radius: 0.7vw;
+  font-size: clamp(0.2rem, 1.0vw, 1.0rem);
+  background: rgb(43, 143, 196);
+}
+
+
+.flight_adder_form {
+  flex-direction: row;
+  align-items: center;
+}
+
+.book__btn {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+}
+
+.book__data {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh;
+}
+
+.book__btn__red-icon, .book__btn__del-icon{
+  width: 0.1vw;
+}
+
+.book-adder {
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  width: 10vw;
+  height: 12vh;
+  padding: 0.8vw;
+  border-radius: 0.7vw;
+  font-size: clamp(0.2rem, 1.0vw, 1.0rem);
+  background: rgb(96, 195, 253);
+}
+.book-adder__btn {
+  box-sizing: border-box;
+  border: none;
+  /*background: none;*/
+  font-size: clamp(0.2rem, 1vw, 1.0rem);
+  color: var(--blue-70-color);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: 0.5s;
+}
+
+.book-adder__btn:hover{
+  background: var(--main-bg-start-color);
+  border: 1px solid var(--blue-70-color);
+}
+
+.book-input{
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  width: 10vw;
+  height: 10vh;
+  padding: 0.8vw;
+  border-radius: 0.7vw;
+  font-size: clamp(0.2rem, 1.0vw, 1.0rem);
+  background: rgb(96, 195, 253);
+}
+
+.book-input__input {
+  width: 8vw;
+}
+
+
+.add-btn
+{
+  background: var(--blue-70-color);
+  border: 0px;
+  color: white;
+  padding: 5px 10px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  font-size: larger;
+  margin-left: 20px;
+}
+
+.add-btn:focus, .add-btn:hover
+{
+  border: 1px solid white;
+  background: var(--blue-50-color);
+}
+
+input, select {
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 0.6vw;
+  border-radius: 0.7vw;
+  box-shadow: 0 0 4px var(--shadow-color);
+  font-size: clamp(0.7rem, 1.5vw, 1.5rem);
+  color: var(--black-color);
+  opacity: 0.7;
+}
+
+.list-data__item {
+  line-height: 2;
+}
+
+.list-data__item .name {
+  font-size: smaller;
+  padding: 5px 2px;
+  background: var(--blue-10-color);
+  border-radius: 7px;
+}
+.list-data__item .value {
+  margin-left:5px;
+}
+
+.del-icon {
+  cursor: pointer;
+}
+
+.plus-div {
+  font-size: 18px;
+}
+
+.app-header__app-name {
+  font-family: Koulen, serif;
+  font-size: 48px;
+  font-weight: 300;
+  border-right: 3px solid;
+  line-height: 1;
+  padding-right: 20px;
+}
+
+/*.task list {*/
+/*  background: url('/images/img.png');*/
+/*}*/
+
+.edit-btn
+{
+  background: var(--blue-70-color);
+  border: 0px;
+  color: white;
+  padding: 5px 10px;
+  /*width: 80px;*/
+  /*height: 30px;*/
+  border-radius: 10px;
+  /*font-size: larger;*/
+  /*margin-left: 20px;*/
+  margin-top: 10px;
+}
+.d-form {
+  display: none;
+}
+
+.flight-info__info-data.d-main
+{
+  border-right: 2px dashed #020275;
+  min-width: 20%;
+}

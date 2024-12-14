@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Koulen:300,400,600,700&amp;lang=en" />
+  <link rel="stylesheet" href="index.css">
+<!--  <script type="module" src="/dist/index-Drq-k9aM.js"></script>-->
+  <script type="module" src="/index.js"></script>
+  <title>Custom Passenger Manager</title>
+</head>
+<body>
+  <header class="app-header" id="app-header">
+    <h1 class="app-header__app-name">StickAIR</h1>
+    <div class="app-header__user-and-controls">
+      <div class="user-info">
+        <span class="user-info__username">
+          Keanu Reeves
+        </span>
+        <div class="user-info__avatar"></div>
+      </div>
+    </div>
+  </header>
+  <main class="app-main" id="app-main">
+    <ul class="tasklists-list">
+      <li class="tasklists-list__item tasklist-adder">
+        <button type="button" class="tasklist-adder__btn">
+          &#10010; Добавить список
+        </button>
+        <form action="" class="flight_adder_form">
+          <div class="info-adder__wrapper">
+
+            <div class="info-adder__input date-time">
+              <span class="name-item">
+                Дата вылета
+              </span>
+              <input
+                      type="datetime-local" name="flightDate" value="12.12.2022 12:50"
+              >
+
+            </div>
+
+            <div class="info-adder__input city">
+              <span class="name-item">
+                Пункт назначения
+              </span>
+              <input
+                      type="text" name="flightDest" value="sdgfs"
+              >
+            </div>
+
+            <div class="info-adder__input plane">
+              <span class="name-item">
+                Самолет
+              </span>
+              <select name="flightPlane">
+              </select>
+            </div>
+          </div>
+          <button type="submit" class="add-btn">&#10010;</button>
+        </form>
+      </li>
+    </ul>
+  </main>
+</body>
+</html>
