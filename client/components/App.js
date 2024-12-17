@@ -5,7 +5,7 @@ import Passenger from "./Passenger.js";
 
 export default class App {
     #flightslist = [];
-
+    #planes = []
     onEscapeKeydown = (event) => {
         if (event.key === 'Escape') {
             const input = document.querySelector('.tasklist-adder__input');
@@ -71,10 +71,14 @@ export default class App {
     onEditFlightPress(event) {
         console.log('test')
         let li = event.target.closest('.tasklist')
+        // document.querySelector('.left-wrapper').classList.add('flip')
         li.querySelector('.d-main').style.display = 'none'
         li.querySelector('.d-form').style.display = 'block'
+        // document.querySelector('.left-wrapper').classList.remove('flip')
+
 
     }
+
     onFlightEditSubmit = (event) => {
         event.preventDefault()
         console.log(event)
@@ -86,19 +90,17 @@ export default class App {
         let UpdatedFlight = flight
 
 
-
-
         let date = event.target.querySelector('input[name="flightDate"]').value,
             destination = event.target.querySelector('input[name="flightDest"]').value,
             planeSelect = event.target.querySelector('select[name="flightPlane"]');
-
         let planeName = planeSelect.options[planeSelect.selectedIndex].text,
             planeId = planeSelect.options[planeSelect.selectedIndex].value;
-        if (destination !== '' && date !=='' && planeId!== '') {
-            if(destination !== flight.destination || planeName !== flight.plane || date !== flight.date)
-            {
+        if (destination !== '' && date !== '' && planeId !== '') {
+
+            if (destination !== flight.destination || planeName !== flight.plane || date !== flight.date) {
+
                 let result = AppModel.updateFlights({
-                    flightsID: flight.flightsID,
+                    flightsID: flightLi.id,
                     flight_dt: date,
                     city: destination,
                     plane_id: planeId
@@ -111,8 +113,7 @@ export default class App {
             }
 
 
-        } else
-        {
+        } else {
             alert("Заполните все поля")
         }
         // let date = event.target.querySelector('input[name="flightDate"]').value,
@@ -139,8 +140,8 @@ export default class App {
             destination = event.target.querySelector('input[name="flightDest"]').value,
             planeSelect = event.target.querySelector('select[name="flightPlane"]');
 
-            let planeName = planeSelect.options[planeSelect.selectedIndex].text,
-                 planeId = planeSelect.options[planeSelect.selectedIndex].value;
+        let planeName = planeSelect.options[planeSelect.selectedIndex].text,
+            planeId = planeSelect.options[planeSelect.selectedIndex].value;
         console.log(planeId, planeName)
         if (destination !== '' && date !== '' && planeId !== '') {
             const newFlight = new Flight({
@@ -167,8 +168,7 @@ export default class App {
             data.then(result => {
                 console.log(result)
                 if (result.statusCode) {
-                    if (result.statusCode !== 200)
-                    {
+                    if (result.statusCode !== 200) {
                         console.log(result)
                     }
 
@@ -209,15 +209,16 @@ export default class App {
         const movedTaskID = localStorage.getItem('movedTaskID');
         const srcTasklistID = localStorage.getItem('srcTasklistID');
         const destTasklistID = destTasklistElement.getAttribute('id');
-
+        console.log(destTasklistID)
+        console.log(destTasklistElement)
         localStorage.setItem('movedTaskID', '');
         localStorage.setItem('srcTasklistID', '');
-        if (!destTasklistElement.querySelector(`[id="${movedTaskID}"]`)) return;
+        // if (!destTasklistElement.querySelector(`[id="${movedTaskID}"]`)) return;
 
         const srcTasklist = this.#flightslist.find(tasklist => tasklist.flightId === srcTasklistID);
         const destTasklist = this.#flightslist.find(tasklist => tasklist.flightId === destTasklistID);
-
         if (srcTasklistID !== destTasklistID) {
+            console.log("AAAA")
             let data = AppModel.moveBookings({
                 bookingID: movedTaskID,
                 flightID: srcTasklistID,
@@ -230,9 +231,16 @@ export default class App {
                     destTasklistElement.querySelector('.bookinglist__item').children,
                     elem => elem.getAttribute('id')
                 );
+                console.log(destTasksIDs)
                 const movedTask = srcTasklist.deleteTask({taskID: movedTaskID});
                 destTasklist.addTask({task: movedTask});
-
+                new Passenger({
+                    text: movedTask.text,
+                    order: destTasksIDs.length + 1,
+                    // onMoveTask: this.onMoveTask,
+                    onEditTask: this.onEditTask,
+                    onDeleteTask: this.onDeleteTask,
+                });
                 // srcTasklist.reorderTasks();
                 // destTasksIDs.forEach((taskID, order) => {
                 //     destTasklist.getTaskById({taskID}).taskOrder = order;
@@ -244,9 +252,6 @@ export default class App {
             })
 
         }
-
-
-
 
 
     };
@@ -310,8 +315,7 @@ export default class App {
             flightID: document.querySelector(`[id="${taskID}"]`).closest('.tasklist').id
         })
         success.then(result => {
-            if(result.statusCode)
-            {
+            if (result.statusCode) {
                 console.error(result)
             } else {
                 document.querySelector(`[id="${taskID}"] span.task__text`).innerHTML = newTaskText;
@@ -328,8 +332,7 @@ export default class App {
             fTask = tasklist.getTaskById({taskID});
             if (fTask) break;
         }
-        if(!fTask)
-        {
+        if (!fTask) {
             // console.log(tasklist, taskID)
             console.error("Не найден пассажир")
             return;
@@ -341,11 +344,9 @@ export default class App {
 
         let data = AppModel.deleteBookings({bookingsID: taskID})
         data.then(result => {
-            if(result.statusCode)
-            {
+            if (result.statusCode) {
                 console.error(result)
-            } else
-            {
+            } else {
                 fTasklist.deleteTask({taskID});
                 // console.log(result.message)
                 document.getElementById(taskID).remove();
@@ -395,6 +396,7 @@ export default class App {
                 curDroppable = curDroppable.parentElement;
             }
 
+
             if (curDroppable !== prevDroppable) {
                 if (prevDroppable) prevDroppable.classList.remove('tasklist_droppable');
 
@@ -438,8 +440,8 @@ export default class App {
             planes.then(result => {
                 let plane = null
                 console.log(planes)
-                for (plane of result)
-                {
+                for (plane of result) {
+                    this.#planes.push(plane)
                     let opt = document.createElement('option')
                     opt.setAttribute('value', plane.id)
                     opt.innerText = plane.name

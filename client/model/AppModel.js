@@ -101,8 +101,9 @@ export default class AppModel {
                 {
                     method: 'PATCH',
                     body: JSON.stringify({
-                        fullname,
-                        flightID
+                        flight_dt: flight_dt,
+                        city: city,
+                        plane_id: plane_id
                     }),
                     headers: {
                         'Content-Type' : 'application/json'
@@ -309,7 +310,7 @@ export default class AppModel {
                 }
             );
 
-
+            console.log(moveBookingsResponse)
             if (moveBookingsResponse.status !== 200) {
                 const moveBookingsBody = await moveBookingsResponse.json();
                 return Promise.reject(moveBookingsBody)

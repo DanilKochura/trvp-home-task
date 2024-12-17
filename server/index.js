@@ -134,6 +134,7 @@ app.patch('/flights/:flightsID', async (req, res) => {
     try {
         const { flightsID }= req.params; // Получение значения из URL
         const { flight_dt, city, plane_id } = req.body; // Получение данных из тела запроса
+        console.log(flight_dt, city, plane_id)
         await db.updateFlights({ flightsID, flight_dt, city, plane_id });
         res.statusCode = 200;
         res.statusMessage = 'OK';

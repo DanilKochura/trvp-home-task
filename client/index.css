@@ -170,6 +170,22 @@ body.dark-theme {
     border-left: 12px solid var(--main-header-text-color);
     border-right: 2px dashed #020275;
     min-width: 20%;
+    text-transform: uppercase;
+}
+
+
+.flip {
+    animation: 1s rotate ease-in-out;
+}
+@keyframes rotate {
+    0%
+    {
+        transform: rotate3d(1, 0, 0, 0)
+    }
+    100%
+    {
+        transform: rotate3d(1, 0, 0, 180deg)
+    }
 }
 
 .right-wrapper {
@@ -471,22 +487,38 @@ body.dark-theme {
     width: 95%;
 }
 
-.flight-info__btn:first-child
+.flight-info__btn.red-icon
 {
     padding: 10px;
-    border-left: 3px solid #ff00005e;
-    border-bottom: 3px solid #ff00005e;
+    border-left: 3px solid #93c4f5;
+    border-bottom: 3px solid #93c4f5;
     box-sizing: border-box;
-    border-radius: 0 0 0 15px;
+    color: #93c4f5;
+    border-radius: 0 1vw 0 1vw;
+
+    &:hover
+    {
+        background: #93c4f5;
+        color: white;
+    }
 }
 
-.flight-info__btn:last-child
+
+
+.flight-info__btn.del-icon
 {
     padding: 10px;
     border-left: 3px solid #ff00005e;
     border-top: 3px solid #ff00005e;
+    color: #ff00005e;
     box-sizing: border-box;
-    border-radius: 0 0 0 15px;
+    border-radius: 1vw 0 1vw;
+
+    &:hover
+    {
+        background: #ff00005e;
+        color: white;
+    }
 }
 
 
@@ -494,20 +526,23 @@ body.dark-theme {
     display: flex;
     flex-direction: row;
     box-sizing: border-box;
-    border: none;
+    /*border: none;*/
     outline: none;
     width: 10vw;
     height: 12vh;
     padding: 0.8vw;
     border-radius: 0.7vw;
     font-size: clamp(0.2rem, 1.0vw, 1.0rem);
-    background: rgb(43, 143, 196);
+    background: transparent;
+    border: 2px dashed var(--blue-50-color);
+    /*background: rgb(43, 143, 196);*/
 }
 
 
 .flight_adder_form {
     flex-direction: row;
     align-items: center;
+    padding: 2vw;
 }
 
 .book__btn {
@@ -606,17 +641,22 @@ input, select {
 
 .list-data__item {
     line-height: 2;
+    display: flex
+;
+    align-items: center;
 }
 
 .list-data__item .name {
-    font-size: smaller;
-    padding: 5px 2px;
-    background: var(--blue-10-color);
-    border-radius: 7px;
+    /*font-size: smaller;*/
+    /*padding: 5px 2px;*/
+    /*background: var(--blue-10-color);*/
+    /*border-radius: 7px;*/
+    color: var(--blue-10-color);
 }
 
 .list-data__item .value {
     margin-left: 5px;
+
 }
 
 .del-icon {
