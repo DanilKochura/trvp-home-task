@@ -107,8 +107,8 @@ export default class App {
                 })
 
                 result.then(result => {
+                    flightLi.querySelector(".dest-val").textContent = destination
                     flightLi.querySelector(".date-vale").textContent = date
-                    flightLi.querySelector(".dest-val").textContent = date
                 })
             }
 
